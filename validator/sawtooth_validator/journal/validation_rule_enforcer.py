@@ -40,13 +40,16 @@ def enforce_validation_rules(settings_view, expected_signer, batches):
     rules = settings_view.get_setting(
         "sawtooth.validator.block_validation_rules")
 
-    if rules is None:
-        return True
+    # if rules is None:
+    #     return True
 
     transactions = []
     for batch in batches:
         transactions += batch.transactions
-
+        print('================ rule transaction =============')
+        print(transactions)
+    if rules is None:
+        return True
     rules = rules.split(";")
     valid = True
     for rule in rules:

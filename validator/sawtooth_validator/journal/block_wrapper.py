@@ -59,6 +59,9 @@ class BlockWrapper:
         """
         Returns the consensus object of the block.
         """
+
+        print('block batches: ')
+        print(self.block)
         return self.block.batches
 
     @property
@@ -72,6 +75,8 @@ class BlockWrapper:
         """
             Return the wrapped block object.
         """
+        print('block object: ')
+        print(self.block)
         return self.block
 
     @property

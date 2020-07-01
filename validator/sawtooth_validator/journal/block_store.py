@@ -398,7 +398,8 @@ class BlockStore(ffi.OwnedPointer):
 
         txn = Transaction()
         txn.ParseFromString(payload)
-
+        print('============= transaction ====================')
+        print(txn)
         return txn
 
     def _get_count(self, fn_name):
