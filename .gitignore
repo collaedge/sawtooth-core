@@ -79,6 +79,7 @@
 /validator/Cargo.lock
 /validator/bin/
 /validator/lib/
+/validator/dist/
 
 /perf/sawtooth_perf/Cargo.lock
 /perf/sawtooth_perf/target/
