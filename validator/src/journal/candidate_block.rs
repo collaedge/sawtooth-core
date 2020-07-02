@@ -168,7 +168,7 @@ impl CandidateBlock {
     fn check_transaction_rewards(&self,  txn: &Transaction) -> bool {
         // get all record from chian
         let total_blocks = self.commit_store.get_block_count();
-
+        total_blocks.ok();
         let mut blocks: Vec<Block> = Vec::new(); 
         let x = 1;
         while x<total_blocks {
