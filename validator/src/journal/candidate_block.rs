@@ -140,6 +140,7 @@ impl CandidateBlock {
         batch: &Batch,
         committed_txn_cache: &mut TransactionCommitCache,
     ) -> bool {
+        println!("======= batch =========", &batch)
         for txn in &batch.transactions {
             if self.txn_is_already_committed(txn, committed_txn_cache) {
                 debug!(
@@ -157,6 +158,7 @@ impl CandidateBlock {
     }
 
     fn check_transaction_dependencies(&self, txn: &Transaction) -> bool {
+        println!("======= transactions =========", txn)
         for dep in &txn.dependencies {
             if !self.committed_txn_cache.contains(dep.as_str()) {
                 debug!(
