@@ -35,7 +35,6 @@ impl PyExecutor {
 }
 
 impl ExecutionPlatform for PyExecutor {
-    println!("============= rust: create scheduler ================");
     fn create_scheduler(
         &self,
         state_hash: &str,

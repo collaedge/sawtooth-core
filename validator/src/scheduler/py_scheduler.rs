@@ -148,7 +148,7 @@ impl Scheduler for PyScheduler {
                         let py = gil.python();
                         SchedulerError::Other(err.get_type(py).name(py).into_owned())
                     })?;
-            print!("============= rust: py_scheduler results +++++++++++++++ {:?}", results);
+            print!("============= rust: py_scheduler results +++++++++++++++ {:#?}", results);
             let beginning_state_hash = results
                 .first()
                 .map(|v| v.0.first().map(|r| r.state_hash.clone()).unwrap_or(None))

@@ -19,6 +19,7 @@
 
 use std::collections::HashSet;
 use std::str;
+use std::vec::Vec;
 
 use cpython;
 use cpython::ObjectProtocol;
@@ -28,7 +29,7 @@ use cpython::Python;
 
 use sawtooth::hashlib::sha256_digest_strs;
 use sawtooth::journal::commit_store::CommitStore;
-use sawtooth::journal::commit_store::BlockStore;
+// use sawtooth::journal::commit_store::BlockStore;
 use sawtooth::journal::validation_rule_enforcer;
 use sawtooth::state::settings_view::SettingsView;
 use sawtooth::{batch::Batch, block::Block, scheduler::Scheduler, transaction::Transaction};
@@ -54,7 +55,7 @@ pub struct FinalizeBlockResult {
 pub struct CandidateBlock {
     previous_block: Block,
     commit_store: CommitStore,
-    block_store: BlockStore,
+    // block_store: BlockStore,
     scheduler: Box<dyn Scheduler>,
     max_batches: usize,
     block_builder: cpython::PyObject,
@@ -78,7 +79,7 @@ impl CandidateBlock {
     pub fn new(
         previous_block: Block,
         commit_store: CommitStore,
-        block_store: BlockStore,
+        // block_store: BlockStore,
         scheduler: Box<dyn Scheduler>,
         committed_txn_cache: TransactionCommitCache,
         block_builder: cpython::PyObject,
@@ -90,7 +91,7 @@ impl CandidateBlock {
         CandidateBlock {
             previous_block,
             commit_store,
-            block_store,
+            // block_store,
             scheduler,
             max_batches,
             committed_txn_cache,
@@ -169,10 +170,12 @@ impl CandidateBlock {
         let total_blocks = self.commit_store.get_block_count();
 
         let mut blocks: Vec<Block> = Vec::new(); 
-        for(x=1;x<total_blocks;x++) {
-            blocks.push(self.commit_store.get_by_block_num(x))
+        let x = 1;
+        while x<total_blocks {
+            blocks.push(self.commit_store.get_by_block_num(x));
+            x += 1;
         }
-        print!("========= check transation rewards  ============= {:#?}", blocks)
+        print!("========= check transation rewards  ============= {:#?}", blocks);
         // let block_iter = self.block_store.get(block_ids);
         // send out rewards
 
