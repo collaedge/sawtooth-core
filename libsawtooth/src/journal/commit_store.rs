@@ -20,6 +20,7 @@ use protobuf::Message;
 use crate::database::error::DatabaseError;
 use crate::database::lmdb::DatabaseReader;
 use crate::database::lmdb::LmdbDatabase;
+// use crate::database::lmdb::Iterator;
 use crate::database::lmdb::LmdbDatabaseWriter;
 use crate::journal::block_store::{
     BatchIndex, BlockStore, BlockStoreError, IndexedBlockStore, TransactionIndex,
@@ -293,6 +294,15 @@ impl CommitStore {
     }
 
     // Legacy
+
+    // fn read_all_from_chain(
+    //     reader:  &dyn DatabaseReader
+    // ) -> Result<Iterator, DatabaseError> {
+    //     let data_iter = reader.cursor();
+    //     for (k, v) in data_iter {
+    //         print!("k = {} v = {}", k,v);
+    //     } 
+    // }
 
     pub fn get_batch(&self, batch_id: &str) -> Result<Batch, DatabaseError> {
         self.get_by_batch_id(batch_id).and_then(|block| {

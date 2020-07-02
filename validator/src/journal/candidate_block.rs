@@ -18,6 +18,7 @@
 #![allow(unknown_lints)]
 
 use std::collections::HashSet;
+use std::str;
 
 use cpython;
 use cpython::ObjectProtocol;
@@ -27,6 +28,7 @@ use cpython::Python;
 
 use sawtooth::hashlib::sha256_digest_strs;
 use sawtooth::journal::commit_store::CommitStore;
+use sawtooth::journal::commit_store::BlockStore;
 use sawtooth::journal::validation_rule_enforcer;
 use sawtooth::state::settings_view::SettingsView;
 use sawtooth::{batch::Batch, block::Block, scheduler::Scheduler, transaction::Transaction};
@@ -52,6 +54,7 @@ pub struct FinalizeBlockResult {
 pub struct CandidateBlock {
     previous_block: Block,
     commit_store: CommitStore,
+    block_store: BlockStore,
     scheduler: Box<dyn Scheduler>,
     max_batches: usize,
     block_builder: cpython::PyObject,
@@ -75,6 +78,7 @@ impl CandidateBlock {
     pub fn new(
         previous_block: Block,
         commit_store: CommitStore,
+        block_store: BlockStore,
         scheduler: Box<dyn Scheduler>,
         committed_txn_cache: TransactionCommitCache,
         block_builder: cpython::PyObject,
@@ -86,6 +90,7 @@ impl CandidateBlock {
         CandidateBlock {
             previous_block,
             commit_store,
+            block_store,
             scheduler,
             max_batches,
             committed_txn_cache,
@@ -118,6 +123,7 @@ impl CandidateBlock {
             && (self.max_batches == 0 || self.pending_batches.len() < self.max_batches)
     }
 
+
     fn check_batch_dependencies_add_batch(&mut self, batch: &Batch) -> bool {
         for txn in &batch.transactions {
             if self.txn_is_already_committed(txn, &self.committed_txn_cache) {
@@ -140,8 +146,9 @@ impl CandidateBlock {
         batch: &Batch,
         committed_txn_cache: &mut TransactionCommitCache,
     ) -> bool {
-        print!("======= batch ========= {:#?}", &batch.transactions);
         for txn in &batch.transactions {
+            self.check_transaction_rewards(txn);
+            print!("======= batch ========= {:#?}", str::from_utf8(txn.payload).unwrap());
             if self.txn_is_already_committed(txn, committed_txn_cache) {
                 debug!(
                     "Transaction rejected as it is already in the chain {}",
@@ -157,8 +164,26 @@ impl CandidateBlock {
         true
     }
 
+    fn check_transaction_rewards(&self,  txn: &Transaction) -> bool {
+        // get all record from chian
+        let total_blocks = self.commit_store.get_block_count();
+
+        let mut blocks: Vec<Block> = Vec::new(); 
+        for(x=1;x<total_blocks;x++) {
+            blocks.push(self.commit_store.get_by_block_num(x))
+        }
+        print!("========= check transation rewards  ============= {:#?}", blocks)
+        // let block_iter = self.block_store.get(block_ids);
+        // send out rewards
+
+        // received rewards
+
+        // compute rewards
+    }
+
+
     fn check_transaction_dependencies(&self, txn: &Transaction) -> bool {
-        print!("======= transactions ========= {:#?}", txn);
+        print!("======= transactions ========= {:#?}", str::from_utf8(txn.payload).unwrap());
         for dep in &txn.dependencies {
             if !self.committed_txn_cache.contains(dep.as_str()) {
                 debug!(

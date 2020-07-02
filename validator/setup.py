@@ -26,8 +26,10 @@ data_dir = "/var/lib/sawtooth"
 log_dir = "/var/log/sawtooth"
 
 data_files = [
-    (bin_dir, ['bin/sawtooth-validator']), # come from cargo build
-    (lib_dir, ['lib/libsawtooth_validator.so']), # come from cargo build
+    #(bin_dir, ['bin/sawtooth-validator']), # come from cargo build
+    #(lib_dir, ['lib/libsawtooth_validator.so']), # come from cargo build
+    (bin_dir, ['target/debug/sawtooth-validator']), 
+    (lib_dir, ['target/debug/libsawtooth_validator.so'])
     (conf_dir, ['packaging/path.toml.example',
                 'packaging/log_config.toml.example',
                 'packaging/validator.toml.example']),
