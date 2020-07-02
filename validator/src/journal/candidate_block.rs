@@ -169,10 +169,10 @@ impl CandidateBlock {
     fn check_transaction_rewards(&self,  txn: &Transaction) -> bool {
         // get all record from chian
         let temp = self.commit_store.get_block_count();
-        let total_blocks = temp.unwrap();
+        let total_blocks = temp.unwrap() as u64;
         let mut blocks: Vec<Block> = Vec::new(); 
         let x: u64 = 1;
-        while x< u64::try_from(total_blocks) {
+        while x < total_blocks {
             blocks.push(self.commit_store.get_by_block_num(x).unwrap());
             x += 1;
         }
