@@ -149,7 +149,7 @@ impl CandidateBlock {
     ) -> bool {
         for txn in &batch.transactions {
             self.check_transaction_rewards(txn);
-            print!("======= batch ========= {:#?}", str::from_utf8(txn.payload).unwrap());
+            print!("======= batch ========= {:#?}", txn.payload);
             if self.txn_is_already_committed(txn, committed_txn_cache) {
                 debug!(
                     "Transaction rejected as it is already in the chain {}",
