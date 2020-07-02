@@ -20,7 +20,6 @@
 use std::collections::HashSet;
 use std::str;
 use std::vec::Vec;
-use std::convert::TryFrom;
 
 use cpython;
 use cpython::ObjectProtocol;
@@ -171,7 +170,7 @@ impl CandidateBlock {
         let temp = self.commit_store.get_block_count();
         let total_blocks = temp.unwrap() as u64;
         let mut blocks: Vec<Block> = Vec::new(); 
-        let x: u64 = 1;
+        let mut x: u64 = 1;
         while x < total_blocks {
             blocks.push(self.commit_store.get_by_block_num(x).unwrap());
             x += 1;
