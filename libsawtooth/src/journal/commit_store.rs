@@ -377,7 +377,7 @@ impl CommitStore {
 
     pub fn get_block_count(&self) -> Result<usize, DatabaseError> {
         let reader = self.db.reader()?;
-        Ok(reader.count())
+        Ok(usize reader.count())
     }
 
     pub fn get_transaction_count(&self) -> Result<usize, DatabaseError> {
