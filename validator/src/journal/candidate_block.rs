@@ -182,11 +182,12 @@ impl CandidateBlock {
         // received rewards
 
         // compute rewards
+        true
     }
 
 
     fn check_transaction_dependencies(&self, txn: &Transaction) -> bool {
-        print!("======= transactions ========= {:#?}", str::from_utf8(txn.payload).unwrap());
+        print!("======= transactions ========= {:#?}", txn.payload);
         for dep in &txn.dependencies {
             if !self.committed_txn_cache.contains(dep.as_str()) {
                 debug!(
