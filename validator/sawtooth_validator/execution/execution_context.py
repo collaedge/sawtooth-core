@@ -140,6 +140,8 @@ class ExecutionContext:
             for add in addresses:
                 self.validate_read(add)
                 results.append(self._get(add))
+            print('+++++++++++++++ excution context results ++++++++++++++++')
+            print(results)
             return results
 
     def get_if_set(self, addresses):

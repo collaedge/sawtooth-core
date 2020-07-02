@@ -140,7 +140,7 @@ impl CandidateBlock {
         batch: &Batch,
         committed_txn_cache: &mut TransactionCommitCache,
     ) -> bool {
-        print!("======= batch ========= {:#?}", &batch);
+        print!("======= batch ========= {:#?}", &batch.transactions);
         for txn in &batch.transactions {
             if self.txn_is_already_committed(txn, committed_txn_cache) {
                 debug!(

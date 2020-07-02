@@ -707,7 +707,8 @@ class StateListRequest(_ClientRequestHandler):
         entries = [
             client_state_pb2.ClientStateListResponse.Entry(address=a, data=v)
             for a, v in self._tree.leaves(request.address or '')]
-
+        print('+++++++++++++++++ client hanlder entries ++++++++++++++++')
+        print(entries)
         # Order entries, remove if tree.entries refactored to be ordered
         entries.sort(key=lambda l: l.address)
 
@@ -1041,6 +1042,8 @@ class TransactionListRequest(_ClientRequestHandler):
             self._block_store.get_transaction,
             lambda block: [t for a in block.batches for t in a.transactions])
 
+        print('+++++++++++++++++ client hanlder transactions ++++++++++++++++')
+        print(transactions)
         if self.is_reverse(request.sorting, self._status.INVALID_SORT):
             transactions.reverse()
 
