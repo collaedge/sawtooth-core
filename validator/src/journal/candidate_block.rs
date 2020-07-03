@@ -172,7 +172,7 @@ impl CandidateBlock {
         let total_blocks = temp.unwrap() as u64;
         let mut blocks: Vec<Block> = Vec::new(); 
         let mut x: u64 = 1;
-        let payload = self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload
+        let payload = self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload;
         print!("====== {:#?}", Bytes::from(payload));
         // while x < total_blocks {
         //     print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
