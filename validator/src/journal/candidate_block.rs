@@ -195,7 +195,7 @@ impl CandidateBlock {
         //         txn_data.push(v);
         //     }
         // }
-        transactions.iter().for_each(|v| txn_data.push(str::from_utf8(&v).unwrap().split(',').collect()));
+        transactions.iter().for_each(|v| txn_data.push((str::from_utf8(&v).unwrap()).split(',').collect()));
         print!("========= history transation  ============= {:#?}", txn_data);
         // let block_iter = self.block_store.get(block_ids);
         print!("========= current transation ============= {:#?}", str::from_utf8(&txn.payload).unwrap());
