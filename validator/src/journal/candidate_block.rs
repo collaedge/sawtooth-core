@@ -188,7 +188,7 @@ impl CandidateBlock {
 
 
     fn check_transaction_dependencies(&self, txn: &Transaction) -> bool {
-        print!("======= transactions ========= {:#?}");
+        print!("======= transactions =========");
         self.check_transaction_rewards(txn);
         for dep in &txn.dependencies {
             if !self.committed_txn_cache.contains(dep.as_str()) {
