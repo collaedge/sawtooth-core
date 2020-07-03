@@ -21,6 +21,9 @@ use std::collections::HashSet;
 use std::str;
 use std::vec::Vec;
 
+use std::fs::File;
+use std::io::prelude::*;
+
 use cpython;
 use cpython::ObjectProtocol;
 use cpython::PyClone;
@@ -171,7 +174,9 @@ impl CandidateBlock {
         let total_blocks = temp.unwrap() as u64;
         let mut blocks: Vec<Block> = Vec::new(); 
         let mut x: u64 = 1;
+        let mut file = File::create("/home/ubuntu/block.txt")?;
         while x < total_blocks {
+            file.write_all(self.commit_store.get_by_block_num(x));
             print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
             blocks.push(self.commit_store.get_by_block_num(x).unwrap());
             x += 1;
