@@ -148,7 +148,6 @@ impl CandidateBlock {
         committed_txn_cache: &mut TransactionCommitCache,
     ) -> bool {
         for txn in &batch.transactions {
-            self.check_transaction_rewards(txn);
             // print!("======= batch ========= {:#?}", txn.payload);
             if self.txn_is_already_committed(txn, committed_txn_cache) {
                 debug!(
@@ -166,12 +165,14 @@ impl CandidateBlock {
     }
 
     fn check_transaction_rewards(&self,  txn: &Transaction) -> bool {
+        print!("======= check transation rewards =========");
         // get all record from chian
         let temp = self.commit_store.get_block_count();
         let total_blocks = temp.unwrap() as u64;
         let mut blocks: Vec<Block> = Vec::new(); 
         let mut x: u64 = 1;
         while x < total_blocks {
+            print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
             blocks.push(self.commit_store.get_by_block_num(x).unwrap());
             x += 1;
         }
@@ -187,7 +188,8 @@ impl CandidateBlock {
 
 
     fn check_transaction_dependencies(&self, txn: &Transaction) -> bool {
-        // print!("======= transactions ========= {:#?}", txn.payload);
+        print!("======= transactions ========= {:#?}");
+        self.check_transaction_rewards(txn);
         for dep in &txn.dependencies {
             if !self.committed_txn_cache.contains(dep.as_str()) {
                 debug!(
