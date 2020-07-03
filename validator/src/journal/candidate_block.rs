@@ -171,7 +171,7 @@ impl CandidateBlock {
         let temp = self.commit_store.get_block_count();
         let total_blocks = temp.unwrap() as u64;
         let mut transactions: Vec<Vec<u8>> = Vec::new(); 
-        let mut x: u64 = 1;
+        let mut x: u64 = 0;
         let payload = &self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload;
         print!("====== {:#?}", str::from_utf8(payload).unwrap());
         while x < total_blocks {
@@ -185,8 +185,12 @@ impl CandidateBlock {
             }
             x += 1;
         }
+
+        let mut txn_data: Vec<Vec<&str>> = Vec::new();
         for t in transactions {
             println!("======= history transation ========= {:#?}", str::from_utf8(&t).unwrap());
+            let txn_str = str::from_utf8(&t).unwrap();
+            txn_data.push(txn_str.split(',').collect());
         }
         // print!("========= check transation rewards  ============= {:#?}", blocks.len());
         // let block_iter = self.block_store.get(block_ids);
