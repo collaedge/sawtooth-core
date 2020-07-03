@@ -170,23 +170,23 @@ impl CandidateBlock {
         // get all record from chian
         let temp = self.commit_store.get_block_count();
         let total_blocks = temp.unwrap() as u64;
-        let mut transactions: Vec<Vec<&str>> = Vec::new(); 
+        let mut transactions: Vec<Vec<u8>> = Vec::new(); 
         let mut x: u64 = 1;
         let payload = &self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload;
         print!("====== {:#?}", str::from_utf8(payload).unwrap());
         while x < total_blocks {
             // print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
             // blocks.push(self.commit_store.get_by_block_num(x).unwrap());
-            let mut block = self.commit_store.get_by_block_num(x).unwrap();
+            let block = self.commit_store.get_by_block_num(x).unwrap();
             for batch in block.batches {
                 for transaction in batch.transactions {
-                    transactions.push(self.unpack_txn(transaction));
+                    transactions.push(transaction.payload);
                 }
             }
             x += 1;
         }
         for t in transactions {
-            println!("======= history transation ========= {:#?}", t)
+            println!("======= history transation ========= {:#?}", str::from_utf8(&t).unwrap());
         }
         // print!("========= check transation rewards  ============= {:#?}", blocks.len());
         // let block_iter = self.block_store.get(block_ids);
@@ -200,10 +200,12 @@ impl CandidateBlock {
         true
     }
 
-    fn unpack_txn(&self, txn: &Transaction) -> Vec<$str> {
-        let txn_str = str::from_utf8(&txn.payload).unwrap();
-        return txn_str.split(',').collect();
-    } 
+    // fn unpack_txn(&self, txn: &Transaction) -> Vec<&str> {
+    //     let data = &txn.payload;
+    //     let txn_str = str::from_utf8(data).unwrap();
+
+    //     txn_str.split(',').collect()
+    // } 
 
 
     fn check_transaction_dependencies(&self, txn: &Transaction) -> bool {
