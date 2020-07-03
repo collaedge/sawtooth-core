@@ -17,10 +17,10 @@
 
 #![allow(unknown_lints)]
 
+
 use std::collections::HashSet;
 use std::str;
 use std::vec::Vec;
-use bytes::Bytes;
 
 use cpython;
 use cpython::ObjectProtocol;
@@ -172,8 +172,8 @@ impl CandidateBlock {
         let total_blocks = temp.unwrap() as u64;
         let mut blocks: Vec<Block> = Vec::new(); 
         let mut x: u64 = 1;
-        let payload = self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload;
-        print!("====== {:#?}", Bytes::from(payload));
+        let payload = &self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload;
+        print!("====== {:#?}", str::from_utf8(payload).unwrap());
         // while x < total_blocks {
         //     print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
         //     blocks.push(self.commit_store.get_by_block_num(x).unwrap());
