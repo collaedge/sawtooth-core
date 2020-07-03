@@ -149,7 +149,7 @@ impl CandidateBlock {
     ) -> bool {
         for txn in &batch.transactions {
             self.check_transaction_rewards(txn);
-            print!("======= batch ========= {:#?}", txn.payload);
+            // print!("======= batch ========= {:#?}", txn.payload);
             if self.txn_is_already_committed(txn, committed_txn_cache) {
                 debug!(
                     "Transaction rejected as it is already in the chain {}",
@@ -175,7 +175,7 @@ impl CandidateBlock {
             blocks.push(self.commit_store.get_by_block_num(x).unwrap());
             x += 1;
         }
-        print!("========= check transation rewards  ============= {:#?}", blocks);
+        print!("========= check transation rewards  ============= {:#?}", blocks.get(1));
         // let block_iter = self.block_store.get(block_ids);
         // send out rewards
 
@@ -187,7 +187,7 @@ impl CandidateBlock {
 
 
     fn check_transaction_dependencies(&self, txn: &Transaction) -> bool {
-        print!("======= transactions ========= {:#?}", txn.payload);
+        // print!("======= transactions ========= {:#?}", txn.payload);
         for dep in &txn.dependencies {
             if !self.committed_txn_cache.contains(dep.as_str()) {
                 debug!(
