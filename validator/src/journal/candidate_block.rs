@@ -166,7 +166,7 @@ impl CandidateBlock {
     }
 
     fn check_transaction_rewards(&self,  txn: &Transaction) -> bool {
-        print!("======= check transation rewards =========");
+        println!("======= check transation rewards =========");
         // get all record from chian
         let temp = self.commit_store.get_block_count();
         let total_blocks = temp.unwrap() as u64;
@@ -174,13 +174,15 @@ impl CandidateBlock {
         let mut x: u64 = 1;
         let payload = &self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload;
         print!("====== {:#?}", str::from_utf8(payload).unwrap());
-        // while x < total_blocks {
-        //     print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
-        //     blocks.push(self.commit_store.get_by_block_num(x).unwrap());
-        //     x += 1;
-        // }
+        while x < total_blocks {
+            // print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
+            blocks.push(self.commit_store.get_by_block_num(x).unwrap());
+            x += 1;
+        }
         // print!("========= check transation rewards  ============= {:#?}", blocks.len());
         // let block_iter = self.block_store.get(block_ids);
+        print!("========= current transation ============= {:#?}", txn.payload);
+
         // send out rewards
 
         // received rewards
