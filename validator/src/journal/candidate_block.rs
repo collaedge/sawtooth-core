@@ -176,7 +176,7 @@ impl CandidateBlock {
         let mut x: u64 = 1;
         let mut file = File::create("/home/ubuntu/block.txt").unwrap();
         while x < total_blocks {
-            file.write(self.commit_store.get_by_block_num(x).unwrap()).unwrap();
+            file.write(self.commit_store.get_by_block_num(x).unwrap().batches[0]).unwrap();
             print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
             blocks.push(self.commit_store.get_by_block_num(x).unwrap());
             x += 1;
