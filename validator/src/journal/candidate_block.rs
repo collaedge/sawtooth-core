@@ -175,7 +175,7 @@ impl CandidateBlock {
             blocks.push(self.commit_store.get_by_block_num(x).unwrap());
             x += 1;
         }
-        print!("========= check transation rewards  ============= {:#?}", blocks.get(1));
+        print!("========= check transation rewards  ============= {:#?}", blocks.len());
         // let block_iter = self.block_store.get(block_ids);
         // send out rewards
 
