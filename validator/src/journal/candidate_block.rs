@@ -172,8 +172,8 @@ impl CandidateBlock {
         let total_blocks = temp.unwrap() as u64;
         let mut transactions: Vec<Vec<u8>> = Vec::new(); 
         let mut x: u64 = 0;
-        let payload = &self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload;
-        print!("====== {:#?}", str::from_utf8(payload).unwrap());
+        // let payload = &self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload;
+        // print!("====== {:#?}", str::from_utf8(payload).unwrap());
         while x < total_blocks {
             // print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
             // blocks.push(self.commit_store.get_by_block_num(x).unwrap());
@@ -187,12 +187,16 @@ impl CandidateBlock {
         }
 
         let mut txn_data: Vec<Vec<&str>> = Vec::new();
-        for t in transactions {
-            println!("======= history transation ========= {:#?}", str::from_utf8(&t).unwrap());
-            let txn_str = str::from_utf8(&t).unwrap();
-            txn_data.push(txn_str.split(',').collect());
-        }
-        // print!("========= check transation rewards  ============= {:#?}", blocks.len());
+        // for t in transactions {
+        //     println!("======= history transation ========= {:#?}", str::from_utf8(&t).unwrap());
+        //     let txn_str = str::from_utf8(&t).unwrap();
+        //     let data:Vec<&str> = txn_str.split(',').collect();
+        //     for v in data {
+        //         txn_data.push(v);
+        //     }
+        // }
+        transactions.iter().for_each(|v| txn_data.push(str::from_utf8(&v).unwrap().split(',').collect()));
+        print!("========= history transation  ============= {:#?}", txn_data);
         // let block_iter = self.block_store.get(block_ids);
         print!("========= current transation ============= {:#?}", str::from_utf8(&txn.payload).unwrap());
 
