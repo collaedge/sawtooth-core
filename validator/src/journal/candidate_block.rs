@@ -21,9 +21,6 @@ use std::collections::HashSet;
 use std::str;
 use std::vec::Vec;
 
-use std::fs::File;
-use std::io::prelude::*;
-
 use cpython;
 use cpython::ObjectProtocol;
 use cpython::PyClone;
@@ -174,14 +171,13 @@ impl CandidateBlock {
         let total_blocks = temp.unwrap() as u64;
         let mut blocks: Vec<Block> = Vec::new(); 
         let mut x: u64 = 1;
-        let mut file = File::create("/home/ubuntu/block.txt").unwrap();
-        while x < total_blocks {
-            file.write(&self.commit_store.get_by_block_num(x).unwrap().batches[0].transactions[0].payload).unwrap();
-            print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
-            blocks.push(self.commit_store.get_by_block_num(x).unwrap());
-            x += 1;
-        }
-        print!("========= check transation rewards  ============= {:#?}", blocks.len());
+        print!("======", self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload);
+        // while x < total_blocks {
+        //     print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
+        //     blocks.push(self.commit_store.get_by_block_num(x).unwrap());
+        //     x += 1;
+        // }
+        // print!("========= check transation rewards  ============= {:#?}", blocks.len());
         // let block_iter = self.block_store.get(block_ids);
         // send out rewards
 
