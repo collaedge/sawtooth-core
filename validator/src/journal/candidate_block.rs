@@ -190,7 +190,7 @@ impl CandidateBlock {
         for t in transactions {
             let txn_str = String::from_utf8_lossy(&t);
             // println!("======= history transation ========= {:#?}", txn_str);
-            let data:Vec<String> = txn_str.split(',').collect();
+            let data:Vec<&str> = txn_str.split(',').collect();
             for v in data {
                 txn_data.push(v.to_string());
             }
