@@ -209,9 +209,9 @@ impl CandidateBlock {
         let mut total_received = 0.0;
         while i < txn_data.len() {
             // as publisher in history
-            let p = txn_data.get(i+2);
+            let p = txn_data.get(i+2).unwarp();
             // as worker in history
-            let w = txn_data.get(i+1);
+            let w = txn_data.get(i+1).unwarp();
             if p == publisher {
                 let base: f64 = txn_data.get(i+6).parse().unwarp();
                 let extra: f64 = txn_data.get(i+7).parse().unwarp();
