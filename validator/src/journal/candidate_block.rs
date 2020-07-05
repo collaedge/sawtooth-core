@@ -187,21 +187,21 @@ impl CandidateBlock {
         }
 
         let mut txn_data: Vec<Vec<&str>> = Vec::new();
-        // for t in transactions {
-        //     println!("======= history transation ========= {:#?}", str::from_utf8(&t).unwrap());
-        //     let txn_str = str::from_utf8(&t).unwrap();
-        //     let data:Vec<&str> = txn_str.split(',').collect();
-        //     for v in data {
-        //         txn_data.push(v);
-        //     }
-        // }
-        transactions.iter().for_each(|t| {
-            let txn_str = str::from_utf8(t).unwrap();
+        for t in transactions {
+            println!("======= history transation ========= {:#?}", str::from_utf8(&t).unwrap());
+            let txn_str = str::from_utf8(&t).unwrap();
             let data:Vec<&str> = txn_str.split(',').collect();
-            // for v in data {
-            txn_data.push(data);
-            // }
-        });
+            for v in data {
+                txn_data.push(v);
+            }
+        }
+        // transactions.iter().for_each(|t| {
+        //     let txn_str = str::from_utf8(t).unwrap();
+        //     let data:Vec<&str> = txn_str.split(',').collect();
+        //     // for v in data {
+        //     txn_data.push(data);
+        //     // }
+        // });
         // transactions.iter().for_each(|v| txn_data.push((str::from_utf8(&v).unwrap()).split(',').collect()));
         print!("========= history transation  ============= {:#?}", txn_data);
         // let block_iter = self.block_store.get(block_ids);
