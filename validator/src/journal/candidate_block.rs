@@ -299,7 +299,7 @@ impl CandidateBlock {
 
     pub fn add_batch(&mut self, batch: Batch) {
         let batch_header_signature = batch.header_signature.clone();
-        let enough_rewards = true;
+        let mut enough_rewards = true;
         
         if batch.trace {
             debug!(
