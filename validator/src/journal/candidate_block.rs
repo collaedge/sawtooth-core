@@ -188,14 +188,14 @@ impl CandidateBlock {
             }
         }
 
-        print!("========= history transation  ============= {:#?}", txn_data);
+        // println!("========= history transation  ============= {:#?}", txn_data);
 
         // current transaction
         let v = String::from_utf8_lossy(&txn.payload);
         let current_txn:Vec<&str> = v.split(',').collect();
-        print!("========= current transation ============= {:#?}", current_txn);
+        println!("========= current transation ============= {:#?}", current_txn);
         let publisher = current_txn.get(2).unwrap();
-        print!("========= current publisher ============= {:#?}", publisher);
+        println!("========= current publisher ============= {:#?}", publisher);
         
         let mut i = 0;
         // history send out rewards
@@ -316,6 +316,7 @@ impl CandidateBlock {
         } 
 
         if !enough_rewards {
+            println!("Publisher does not have enough rewards");
             debug!("Publisher does not have enough rewards");
         } else if self.batch_is_already_committed(&batch) {
             debug!(
