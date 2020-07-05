@@ -199,8 +199,8 @@ impl CandidateBlock {
         // current transaction
         let current_txn:Vec<&str> = (String::from_utf8_lossy(&txn.payload)).split(',').collect();
         print!("========= current transation ============= {:#?}", current_txn);
-        let publisher = current_txn.get(2);
-        print!("========= current publisher ============= {}", publisher);
+        let publisher = current_txn.get(2).unwrap();
+        print!("========= current publisher ============= {:#?}", publisher);
         
         let mut i = 0;
         // history send out rewards
@@ -212,20 +212,20 @@ impl CandidateBlock {
             let p = txn_data.get(i+2);
             // as worker in history
             let w = txn_data.get(i+1);
-            if(p == publisher) {
-                let base = txn_data.get(i+6).parse::<f32>().unwarp();
-                let extra = txn_data.get(i+7).parse::<f32>().unwarp();
+            if p == publisher {
+                let base: f64 = txn_data.get(i+6).parse().unwarp();
+                let extra: f64 = txn_data.get(i+7).parse().unwarp();
                 total_sendout = total_sendout + base + extra;
             }
-            if(w == publisher) {
-                let base = txn_data.get(i+6).parse::<f32>().unwarp();
-                let extra = txn_data.get(i+7).parse::<f32>().unwarp();
+            if w == publisher {
+                let base: f64 = txn_data.get(i+6).parse().unwarp();
+                let extra: f64 = txn_data.get(i+7).parse().unwarp();
                 total_received = total_received + base + extra;
             }
             i = i+9;
         }
         print!("========= total send out ============= {}", total_sendout);
-        print!("========= total total_received ============= {}", total_received)
+        print!("========= total total_received ============= {}", total_received);
 
         // compute rewards
         print!("========= remain ============= {}", total_received-total_sendout);
