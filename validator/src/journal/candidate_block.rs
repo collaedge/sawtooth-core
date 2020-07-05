@@ -213,13 +213,13 @@ impl CandidateBlock {
             // as worker in history
             let w = txn_data.get(i+1).unwarp();
             if p == publisher {
-                let base: f64 = txn_data.get(i+6).parse().unwarp();
-                let extra: f64 = txn_data.get(i+7).parse().unwarp();
+                let base: f64 = txn_data.get(i+6).unwarp().parse().unwarp();
+                let extra: f64 = txn_data.get(i+7).unwarp().parse().unwarp();
                 total_sendout = total_sendout + base + extra;
             }
             if w == publisher {
-                let base: f64 = txn_data.get(i+6).parse().unwarp();
-                let extra: f64 = txn_data.get(i+7).parse().unwarp();
+                let base: f64 = txn_data.get(i+6).unwarp().parse().unwarp();
+                let extra: f64 = txn_data.get(i+7).unwarp().parse().unwarp();
                 total_received = total_received + base + extra;
             }
             i = i+9;
@@ -229,7 +229,10 @@ impl CandidateBlock {
 
         // compute rewards
         print!("========= remain ============= {}", total_received-total_sendout);
-        print!("========= current send out ============= {}", current_txn.get(7)+current_txn.get(8));
+
+        let base: f64 = current_txn.get(7).unwarp().parse().unwarp();
+        let extra: f64 = current_txn.get(8).unwarp().parse().unwarp(); 
+        print!("========= current send out ============= {}", base+extra);
         true
     }
 
