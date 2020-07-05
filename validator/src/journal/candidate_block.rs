@@ -189,29 +189,47 @@ impl CandidateBlock {
         let mut txn_data: Vec<String> = Vec::new();
         for t in transactions {
             let txn_str = String::from_utf8_lossy(&t);
-            // println!("======= history transation ========= {:#?}", txn_str);
             let data:Vec<&str> = txn_str.split(',').collect();
             for v in data {
                 txn_data.push(v.to_string());
             }
         }
-        // transactions.iter().for_each(|t| {
-        //     let txn_str = str::from_utf8(t).unwrap();
-        //     let data:Vec<&str> = txn_str.split(',').collect();
-        //     // for v in data {
-        //     txn_data.push(data);
-        //     // }
-        // });
-        // transactions.iter().for_each(|v| txn_data.push((str::from_utf8(&v).unwrap()).split(',').collect()));
+
         print!("========= history transation  ============= {:#?}", txn_data);
-        // let block_iter = self.block_store.get(block_ids);
-        print!("========= current transation ============= {:#?}", str::from_utf8(&txn.payload).unwrap());
-
-        // send out rewards
-
-        // received rewards
+        // current transaction
+        let current_txn:Vec<&str> = (String::from_utf8_lossy(&txn.payload)).split(',').collect();
+        print!("========= current transation ============= {:#?}", current_txn);
+        let publisher = current_txn.get(2);
+        print!("========= current publisher ============= {}", publisher);
+        
+        let mut i = 0;
+        // history send out rewards
+        let mut total_sendout = 0.0;
+        // history received rewards
+        let mut total_received = 0.0;
+        while i < txn_data.len() {
+            // as publisher in history
+            let p = txn_data.get(i+2);
+            // as worker in history
+            let w = txn_data.get(i+1);
+            if(p == publisher) {
+                let base = txn_data.get(i+6).parse::<f32>().unwarp();
+                let extra = txn_data.get(i+7).parse::<f32>().unwarp();
+                total_sendout = total_sendout + base + extra;
+            }
+            if(w == publisher) {
+                let base = txn_data.get(i+6).parse::<f32>().unwarp();
+                let extra = txn_data.get(i+7).parse::<f32>().unwarp();
+                total_received = total_received + base + extra;
+            }
+            i = i+9;
+        }
+        print!("========= total send out ============= {}", total_sendout);
+        print!("========= total total_received ============= {}", total_received)
 
         // compute rewards
+        print!("========= remain ============= {}", total_received-total_sendout);
+        print!("========= current send out ============= {}", current_txn.get(7)+current_txn.get(8));
         true
     }
 
