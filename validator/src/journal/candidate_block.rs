@@ -197,7 +197,8 @@ impl CandidateBlock {
 
         print!("========= history transation  ============= {:#?}", txn_data);
         // current transaction
-        let current_txn:Vec<&str> = (String::from_utf8_lossy(&txn.payload)).split(',').collect();
+        let v = String::from_utf8_lossy(&txn.payload);
+        let current_txn:Vec<&str> = v.split(',').collect();
         print!("========= current transation ============= {:#?}", current_txn);
         let publisher = current_txn.get(2).unwrap();
         print!("========= current publisher ============= {:#?}", publisher);
