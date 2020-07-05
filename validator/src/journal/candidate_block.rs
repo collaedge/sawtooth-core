@@ -209,17 +209,17 @@ impl CandidateBlock {
         let mut total_received = 0.0;
         while i < txn_data.len() {
             // as publisher in history
-            let p = txn_data.get(i+2).unwarp();
+            let p = txn_data.get(i+2).unwrap();
             // as worker in history
-            let w = txn_data.get(i+1).unwarp();
+            let w = txn_data.get(i+1).unwrap();
             if p == publisher {
-                let base: f64 = txn_data.get(i+6).unwarp().parse().unwarp();
-                let extra: f64 = txn_data.get(i+7).unwarp().parse().unwarp();
+                let base: f64 = txn_data.get(i+6).unwrap().parse().unwrap();
+                let extra: f64 = txn_data.get(i+7).unwrap().parse().unwrap();
                 total_sendout = total_sendout + base + extra;
             }
             if w == publisher {
-                let base: f64 = txn_data.get(i+6).unwarp().parse().unwarp();
-                let extra: f64 = txn_data.get(i+7).unwarp().parse().unwarp();
+                let base: f64 = txn_data.get(i+6).unwrap().parse().unwrap();
+                let extra: f64 = txn_data.get(i+7).unwrap().parse().unwrap();
                 total_received = total_received + base + extra;
             }
             i = i+9;
@@ -230,8 +230,8 @@ impl CandidateBlock {
         // compute rewards
         print!("========= remain ============= {}", total_received-total_sendout);
 
-        let base: f64 = current_txn.get(7).unwarp().parse().unwarp();
-        let extra: f64 = current_txn.get(8).unwarp().parse().unwarp(); 
+        let base: f64 = current_txn.get(7).unwrap().parse().unwrap();
+        let extra: f64 = current_txn.get(8).unwrap().parse().unwrap(); 
         print!("========= current send out ============= {}", base+extra);
         true
     }
