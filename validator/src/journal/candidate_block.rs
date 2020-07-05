@@ -188,7 +188,7 @@ impl CandidateBlock {
 
         let mut txn_data: Vec<String> = Vec::new();
         for t in transactions {
-            println!("======= history transation ========= {:#?}", str::from_utf8(&t).unwrap());
+            println!("======= history transation ========= {:#?}", String::from_utf8(t));
             // let txn_str = str::from_utf8(&t).unwrap();
             // let data:Vec<&str> = txn_str.split(',').collect();
             // for v in data {
