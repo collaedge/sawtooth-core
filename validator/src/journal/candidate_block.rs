@@ -231,8 +231,8 @@ impl CandidateBlock {
         // compute rewards
         print!("========= remain ============= {}", total_received-total_sendout);
 
-        let base: f64 = current_txn.get(7).unwrap().parse().unwrap();
-        let extra: f64 = current_txn.get(8).unwrap().parse().unwrap(); 
+        let base: f64 = current_txn.get(6).unwrap().parse().unwrap();
+        let extra: f64 = current_txn.get(7).unwrap().parse().unwrap(); 
         print!("========= current send out ============= {}", base+extra);
         true
     }
