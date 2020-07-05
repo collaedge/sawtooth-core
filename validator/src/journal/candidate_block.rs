@@ -30,7 +30,6 @@ use cpython::Python;
 
 use sawtooth::hashlib::sha256_digest_strs;
 use sawtooth::journal::commit_store::CommitStore;
-// use sawtooth::journal::commit_store::BlockStore;
 use sawtooth::journal::validation_rule_enforcer;
 use sawtooth::state::settings_view::SettingsView;
 use sawtooth::{batch::Batch, block::Block, scheduler::Scheduler, transaction::Transaction};
@@ -56,7 +55,6 @@ pub struct FinalizeBlockResult {
 pub struct CandidateBlock {
     previous_block: Block,
     commit_store: CommitStore,
-    // block_store: BlockStore,
     scheduler: Box<dyn Scheduler>,
     max_batches: usize,
     block_builder: cpython::PyObject,
@@ -80,7 +78,6 @@ impl CandidateBlock {
     pub fn new(
         previous_block: Block,
         commit_store: CommitStore,
-        // block_store: BlockStore,
         scheduler: Box<dyn Scheduler>,
         committed_txn_cache: TransactionCommitCache,
         block_builder: cpython::PyObject,
@@ -92,7 +89,6 @@ impl CandidateBlock {
         CandidateBlock {
             previous_block,
             commit_store,
-            // block_store,
             scheduler,
             max_batches,
             committed_txn_cache,
@@ -149,7 +145,6 @@ impl CandidateBlock {
         committed_txn_cache: &mut TransactionCommitCache,
     ) -> bool {
         for txn in &batch.transactions {
-            // print!("======= batch ========= {:#?}", txn.payload);
             if self.txn_is_already_committed(txn, committed_txn_cache) {
                 debug!(
                     "Transaction rejected as it is already in the chain {}",
@@ -167,16 +162,13 @@ impl CandidateBlock {
 
     fn check_transaction_rewards(&self,  txn: &Transaction) -> bool {
         println!("======= check transation rewards =========");
-        // get all record from chian
+        // get number of record from chian
         let temp = self.commit_store.get_block_count();
         let total_blocks = temp.unwrap() as u64;
+        // unpack blocks, store txn into vector
         let mut transactions: Vec<Vec<u8>> = Vec::new(); 
         let mut x: u64 = 1;
-        // let payload = &self.commit_store.get_by_block_num(1).unwrap().batches[0].transactions[0].payload;
-        // print!("====== {:#?}", str::from_utf8(payload).unwrap());
         while x < total_blocks {
-            // print!("========= check transation block  ============= {:#?}", self.commit_store.get_by_block_num(x));
-            // blocks.push(self.commit_store.get_by_block_num(x).unwrap());
             let block = self.commit_store.get_by_block_num(x).unwrap();
             for batch in block.batches {
                 for transaction in batch.transactions {
@@ -186,6 +178,7 @@ impl CandidateBlock {
             x += 1;
         }
 
+        // parse txn string
         let mut txn_data: Vec<String> = Vec::new();
         for t in transactions {
             let txn_str = String::from_utf8_lossy(&t);
@@ -196,6 +189,7 @@ impl CandidateBlock {
         }
 
         print!("========= history transation  ============= {:#?}", txn_data);
+
         // current transaction
         let v = String::from_utf8_lossy(&txn.payload);
         let current_txn:Vec<&str> = v.split(',').collect();
@@ -225,28 +219,30 @@ impl CandidateBlock {
             }
             i = i+9;
         }
-        print!("========= total send out ============= {}", total_sendout);
-        print!("========= total total_received ============= {}", total_received);
+        println!("========= total send out ============= {}", total_sendout);
+        println!("========= total total_received ============= {}", total_received);
 
         // compute rewards
-        print!("========= remain ============= {}", total_received-total_sendout);
+        let remaining_rewards = total_received-total_sendout;
+        println!("========= remaining ============= {}", remaining_rewards);
 
         let base: f64 = current_txn.get(6).unwrap().parse().unwrap();
-        let extra: f64 = current_txn.get(7).unwrap().parse().unwrap(); 
-        print!("========= current send out ============= {}", base+extra);
-        true
+        let extra: f64 = current_txn.get(7).unwrap().parse().unwrap();
+        let current_sendout = base + extra; 
+        println!("========= current send out ============= {}", current_sendout);
+
+        if current_sendout > remaining_rewards {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    // fn unpack_txn(&self, txn: &Transaction) -> Vec<&str> {
-    //     let data = &txn.payload;
-    //     let txn_str = str::from_utf8(data).unwrap();
-
-    //     txn_str.split(',').collect()
-    // } 
-
-
     fn check_transaction_dependencies(&self, txn: &Transaction) -> bool {
-        self.check_transaction_rewards(txn);
+        if !self.check_transaction_rewards(txn) {
+            debug!("Publisher does not have enough rewards");
+            return false;
+        }
         for dep in &txn.dependencies {
             if !self.committed_txn_cache.contains(dep.as_str()) {
                 debug!(
