@@ -194,11 +194,11 @@ impl CandidateBlock {
 
 
         let file_path = Path::new("/var/local/data.txt");
-        let mut file = File::create(&file_path);
+        let mut file = File::create(&file_path).unwarp();
         println!("========= file  ============= {:#?}", file);
-        // for value in &txn_data {
-        //     file.write_all(value);
-        // }
+        for value in &txn_data {
+            file.write_all(value);
+        }
         
         // current transaction
         let v = String::from_utf8_lossy(&txn.payload);
