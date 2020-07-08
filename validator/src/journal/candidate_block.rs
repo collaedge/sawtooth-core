@@ -197,7 +197,7 @@ impl CandidateBlock {
         let mut file = File::create(&file_path).unwrap();
         println!("========= file  ============= {:#?}", file);
         for value in &txn_data {
-            file.write_all(value);
+            file.write_all(value.as_bytes());
         }
         
         // current transaction
