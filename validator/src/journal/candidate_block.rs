@@ -193,7 +193,7 @@ impl CandidateBlock {
         println!("========= history transation  ============= {:#?}", txn_data);
 
 
-        let file_path = Path::new("/var/local/data.txt");
+        let file_path = Path::new("../../../../tmp/data.txt");
         let mut file = File::create(&file_path).unwrap();
         println!("========= file  ============= {:#?}", file);
         for value in &txn_data {
