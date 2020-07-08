@@ -190,12 +190,15 @@ impl CandidateBlock {
                 txn_data.push(v.to_string());
             }
         }
+        println!("========= history transation  ============= {:#?}", txn_data);
+
 
         let file_path = Path::new("/var/local/data.txt");
         let mut file = File::create(&file_path);
-        file.write_all(txn_data);
-        // println!("========= history transation  ============= {:#?}", txn_data);
-
+        for value in &txn_data {
+            file.write_all(value);
+        }
+        
         // current transaction
         let v = String::from_utf8_lossy(&txn.payload);
         let current_txn:Vec<&str> = v.split(',').collect();
