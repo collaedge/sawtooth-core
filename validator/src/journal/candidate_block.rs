@@ -21,6 +21,9 @@
 use std::collections::HashSet;
 use std::str;
 use std::vec::Vec;
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
 
 use cpython;
 use cpython::ObjectProtocol;
@@ -188,6 +191,9 @@ impl CandidateBlock {
             }
         }
 
+        let file_path = Path::new("/var/local/data.txt");
+        let mut file = File::create(&file_path);
+        file.write_all(txn_data);
         // println!("========= history transation  ============= {:#?}", txn_data);
 
         // current transaction
