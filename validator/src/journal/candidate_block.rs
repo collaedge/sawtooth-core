@@ -322,16 +322,17 @@ impl CandidateBlock {
             );
         }
 
-        for txn in &batch.transactions {
-            if !self.check_transaction_rewards(txn) {
-                enough_rewards = false;
-            }
-        } 
+        // for txn in &batch.transactions {
+        //     if !self.check_transaction_rewards(txn) {
+        //         enough_rewards = false;
+        //     }
+        // } 
 
-        if !enough_rewards {
-            println!("Publisher does not have enough rewards");
-            debug!("Publisher does not have enough rewards");
-        } else if self.batch_is_already_committed(&batch) {
+        // if !enough_rewards {
+        //     println!("Publisher does not have enough rewards");
+        //     debug!("Publisher does not have enough rewards");
+        // } else 
+        if self.batch_is_already_committed(&batch) {
             debug!(
                 "Dropping previously committed batch: {}",
                 batch_header_signature.as_str()
